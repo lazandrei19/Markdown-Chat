@@ -6,3 +6,5 @@ Vagrantfile
 npm-debug*
 vendor
 .DS_STORE
+*.codekit
+.sass-cache
