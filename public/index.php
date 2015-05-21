@@ -29,7 +29,7 @@
 			</div>
 			<div class="chat">
 				<div class="messages" ondragover="event.preventDefault();" ondrop="drop(event)">
-					<span class="welcome">Start chatting with someone to make the messages appear</span>
+					<span class="welcome">Hey there</span>
 				</div>
 				<div class="input">
 					<textarea id="input"></textarea>
