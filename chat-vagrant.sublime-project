@@ -7,7 +7,7 @@
 				"*"
 			],
 			"name": "Markup",
-			"path": "public"
+			"path": "views"
 		},
 		{
 			"folder_exclude_patterns":
@@ -36,8 +36,8 @@
 				".*",
 				"vendor"
 			],
-			"name": "Php",
-			"path": "public/php"
+			"name": "Routes",
+			"path": "routes"
 		},
 		{
 			"file_exclude_patterns":
@@ -73,6 +73,10 @@
 			],
 			"name": "Node",
 			"path": "public/node"
+		},
+		{
+			"name": "Tests",
+			"path": "test"
 		},
 		{	"name": "[DEBUG]CSS",
 			"path": "public/css"

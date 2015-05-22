@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<?php 	
+	setcookie("logged", "", time()-3600);
+	setcookie("username", "", time()-3600);
+?>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Register</title>
+	<link rel="stylesheet" href="css/signup.css">
+</head>
+<body>
+	<div class="over"></div>
+	<div class="content">
+		<form action="register" method="POST" accept-charset="utf-8">
+			<input type="text" name="username" placeholder="Username"><br>
+			<input type="password" name="fakepassword" placeholder="Password"><br>
+			<input type="hidden" name="password" style="display: none;height: 0px;">
+			<div class="bt" onclick="submit()">Register</div>
+		</form>
+	</div>
+	<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha512.js"></script>
+	<script type="text/javascript">
+		function submit () {
+			document.forms[0].fakepassword.setAttribute('disabled', true);
+			document.forms[0].password.value = CryptoJS.SHA512(document.forms[0].fakepassword.value).toString();
+			document.forms[0].submit();
+		}
+	</script>
+</body>
+</html>

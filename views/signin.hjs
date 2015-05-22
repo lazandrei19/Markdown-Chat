@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Sign In</title>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+	<div class="over"></div>
+	<div class="content">
+		<form action="signin" method="POST" accept-charset="utf-8">
+			<input type="text" name="username" value="" placeholder="Username"><br>
+			<input type="password" name="fakepassword" placeholder="Password"><br>
+			<input type="hidden" name="password" style="display: none;height: 0px;">
+			<label><input type="checkbox" name="remember" value=""><span class="label-text">Remember Me</span></label><br>
+			<div class="bt" onclick="submit()">Sign In</div>
+		</form>
+	</div>
+
+	<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha512.js"></script>
+	<script type="text/javascript">
+		function submit () {
+			document.forms[0].fakepassword.setAttribute('disabled', true);
+			document.forms[0].password.value = CryptoJS.SHA512(document.forms[0].fakepassword.value).toString();
+			document.forms[0].submit();
+		}
+	</script>
+</body>
+</html>
