@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "pagedown": "^1.1.0",
-    "socket.io": "^0.8.7"
+    "socket.io": "^0.8.7",
+    "mongodb": "*"
   }
 }
