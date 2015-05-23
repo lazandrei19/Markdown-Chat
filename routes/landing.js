@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	res.clearCookie('logged');
+	res.clearCookie('password');
 	res.clearCookie('username');
 	res.render('landingpage');
 });

@@ -6,13 +6,13 @@ var Cookie = require('cookies');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	res.clearCookie('logged');
+	res.clearCookie('password');
 	res.clearCookie('username');
 	res.render('signin');
 });
 
 router.post('/', function(req, res, next) {
-	res.clearCookie('logged');
+	res.clearCookie('password');
 	res.clearCookie('username');
 	var cookies = new Cookie(req, res);
 	
@@ -25,11 +25,14 @@ router.post('/', function(req, res, next) {
 			if(item){
 				if(passwordHash.verify(req.body.password, item.password)) {
 					//SET COOKIES at 6 months, delete on index if not good
-					cookies.set('username', req.body.username, {maxAge: 10000, path: '/'});
+					cookies.set('username', req.body.username, {maxAge: 15552000000, path: '/'});
+					cookies.set('password', req.body.password, {maxAge: 15552000000, path: '/'});
 					if(req.body.remember == "") {
-						
+						cookies.set('remember', 'true', {maxAge: 15552000000, path: '/'});
+					} else {
+						cookies.set('remember', 'false', {maxAge: 15552000000, path: '/'});
 					}
-					res.render('index', { uniq: item.uniq });
+					res.redirect('/');
 				}
 			}
 		});
