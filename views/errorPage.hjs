@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Error Page</title>
+	<link rel="stylesheet" href="css/errorPage.css">
+</head>
+<body>
+	<div class="error-container">
+		<div class="error-code">Error: {{ code }}</div>
+		<div class="error-message">{{ message }}</div>
+
+		<a href={{ href }}>Go back and fix your mistake</a>
+	</div>
+</body>
+</html>

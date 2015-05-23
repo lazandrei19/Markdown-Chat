@@ -32,6 +32,8 @@ router.post('/', function(req, res, next) {
 				cookies.set('password', req.body.password, {maxAge: 15552000000, path: '/'});
 				cookies.set('remember', 'false', {maxAge: 15552000000, path: '/'});
 				res.redirect('/');
+			} else {
+				res.render('errorPage', {code: "User already exists", message: "Please go back and choose another username", href: 'register'});
 			}
 		});
 	});

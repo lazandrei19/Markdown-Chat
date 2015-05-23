@@ -33,7 +33,11 @@ router.post('/', function(req, res, next) {
 						cookies.set('remember', 'false', {maxAge: 15552000000, path: '/'});
 					}
 					res.redirect('/');
+				} else {
+					res.render('errorPage', {code: "Invalid password", message: "Please go back and type your password in again", href: 'signin'});
 				}
+			} else {
+				res.render('errorPage', {code: "Invalid user", message: "Please go back and type your username in again", href: 'signin'});
 			}
 		});
 	});
