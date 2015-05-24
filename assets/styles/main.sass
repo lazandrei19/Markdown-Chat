@@ -1,11 +1,11 @@
 @import "../../bower_components/bourbon/app/assets/stylesheets/bourbon"
+@import mixins
 
 $msg-bg: #333
 
 body, html 
 	overflow: hidden
-	height: 100%
-	width: 100%
+	+size(100%)
 
 
 body:before 
@@ -51,7 +51,17 @@ body:before
 		height: 100%
 		margin: 0 auto
 		padding: 0
-	
+
+.menu
+	display: none
+	+position(absolute, 2vh null null 2vh)
+	+size(25px)
+	background: 
+		image: url('../images/menu.png')
+		size: contain
+
+	@media screen and (max-width: 1000px)
+		display: block	
 
 
 .contacts 
@@ -61,6 +71,9 @@ body:before
 	float: left
 	background: rgba(#ddd, 0.5)
 	text-align: center
+
+	@media screen and (max-width: 1000px)
+		display: none
 	
 	#searchbar 
 		width: 100%
@@ -169,6 +182,14 @@ body:before
 	width: 58%
 	position: relative
 
+	@media screen and (max-width: 1000px)
+		width: 90%
+		+center
+
+	@media screen and (max-width: 750px)
+		width: 100%
+
+
 	.messages 
 		position: absolute
 		height: calc(100% - 100px)
@@ -177,13 +198,31 @@ body:before
 		top: 0px
 		bottom: 26px
 		clear: both
+		overflow-x: hidden
+
+		.logo
+			width: 100%
+			height: 50%
+			position: absolute
+			top: 50%
+			left: 50%
+			+transform(translateX(-50%) translateY(-50%))
+			background:
+				image: url('../images/EdgeLogoText.png')
+				size: contain
+				repeat: no-repeat
+				position: 50%
+
+
+		@media screen and (max-width: 1000px)
+			overflow-y: scroll
 
 		.message 
 			display: block
 			overflow: auto
 
 			img 
-				border-radius: 10%
+				border-radius: 2vh
 				padding: 5px
 				max-height: 400px
 				max-width: 400px
@@ -194,7 +233,7 @@ body:before
 				left: 5px
 				text-align: left
 				background: rgba($msg-bg, 0.3)
-				border-radius: 10%
+				border-radius: 2vh
 				padding: 10px 3px
 				max-width: 75%
 				margin-bottom: 10px
@@ -208,7 +247,7 @@ body:before
 				text-align: left
 				float: right
 				background: rgba($msg-bg, 0.3)
-				border-radius: 10%
+				border-radius: 2vh
 				max-width: 75%
 				padding: 10px 3px
 				margin-bottom: 10px
@@ -252,6 +291,9 @@ body:before
 	display: block
 	background: rgba(#ddd, 0.5)
 	overflow-y: hidden
+
+	@media screen and (max-width: 1000px)
+		display: none
 	
 	.images
 		width: 100%

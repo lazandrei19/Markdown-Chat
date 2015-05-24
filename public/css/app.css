@@ -40,6 +40,19 @@ body:before {
     margin: 0 auto;
     padding: 0; }
 
+.menu {
+  display: none;
+  position: absolute;
+  top: 2vh;
+  left: 2vh;
+  height: 25px;
+  width: 25px;
+  background-image: url("../images/menu.png");
+  background-size: contain; }
+  @media screen and (max-width: 1000px) {
+    .menu {
+      display: block; } }
+
 .contacts {
   width: 22%;
   height: 100%;
@@ -47,6 +60,9 @@ body:before {
   float: left;
   background: rgba(221, 221, 221, 0.5);
   text-align: center; }
+  @media screen and (max-width: 1000px) {
+    .contacts {
+      display: none; } }
   .contacts #searchbar {
     width: 100%; }
     .contacts #searchbar input {
@@ -117,6 +133,17 @@ body:before {
   height: 100%;
   width: 58%;
   position: relative; }
+  @media screen and (max-width: 1000px) {
+    .chat {
+      width: 90%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center; } }
+  @media screen and (max-width: 750px) {
+    .chat {
+      width: 100%; } }
   .chat .messages {
     position: absolute;
     height: calc(100% - 100px);
@@ -124,12 +151,31 @@ body:before {
     overflow-y: hidden;
     top: 0px;
     bottom: 26px;
-    clear: both; }
+    clear: both;
+    overflow-x: hidden; }
+    .chat .messages .logo {
+      width: 100%;
+      height: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translateX(-50%) translateY(-50%);
+      -moz-transform: translateX(-50%) translateY(-50%);
+      -ms-transform: translateX(-50%) translateY(-50%);
+      -o-transform: translateX(-50%) translateY(-50%);
+      transform: translateX(-50%) translateY(-50%);
+      background-image: url("../images/EdgeLogoText.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: 50%; }
+    @media screen and (max-width: 1000px) {
+      .chat .messages {
+        overflow-y: scroll; } }
     .chat .messages .message {
       display: block;
       overflow: auto; }
       .chat .messages .message img {
-        border-radius: 10%;
+        border-radius: 2vh;
         padding: 5px;
         max-height: 400px;
         max-width: 400px; }
@@ -138,7 +184,7 @@ body:before {
         left: 5px;
         text-align: left;
         background: rgba(51, 51, 51, 0.3);
-        border-radius: 10%;
+        border-radius: 2vh;
         padding: 10px 3px;
         max-width: 75%;
         margin-bottom: 10px;
@@ -150,7 +196,7 @@ body:before {
         text-align: left;
         float: right;
         background: rgba(51, 51, 51, 0.3);
-        border-radius: 10%;
+        border-radius: 2vh;
         max-width: 75%;
         padding: 10px 3px;
         margin-bottom: 10px;
@@ -179,6 +225,9 @@ body:before {
   display: block;
   background: rgba(221, 221, 221, 0.5);
   overflow-y: hidden; }
+  @media screen and (max-width: 1000px) {
+    .tmp {
+      display: none; } }
   .tmp .images {
     width: 100%; }
     .tmp .images .image {
