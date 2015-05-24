@@ -5,7 +5,6 @@ var mongo = require('mongodb').MongoClient;
 var randtoken = require('rand-token');
 var Cookie = require('cookies');
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
 	res.clearCookie('password');
 	res.clearCookie('username');

@@ -55,33 +55,19 @@
 			"path": "."
 		},
 		{
-			"file_exclude_patterns":
-			[
-				"*.php"
-			
-			],
-			"name": "public",
-			"path": "."
-		},
-		{	"file_exclude_patterns":
-			[
-				"npm-debug.log*"
-			],
-			"folder_exclude_patterns":
-			[
-				"node_modules"
-			],
-			"name": "Node",
-			"path": "public/node"
+			"name": "Bin",
+			"path": "bin"
 		},
 		{
 			"name": "Tests",
 			"path": "test"
 		},
-		{	"name": "[DEBUG]CSS",
+		{
+			"name": "[DEBUG]CSS",
 			"path": "public/css"
 		},
-		{	"name": "[DEBUG]JS",
+		{
+			"name": "[DEBUG]JS",
 			"path": "public/js"
 		}
 	]

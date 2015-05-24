@@ -92,6 +92,10 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
+/**
+ * WS server
+ */
+
 //Mongo Connection
 mongo.connect("mongodb://127.0.0.1/chat", function(err, db) {
   if(err) throw err;

@@ -18,7 +18,7 @@
 
  Contacts:
    ✔ Design layout @done (15-05-01 22:57)
-   ✔ Do search @done (15-05-01 22:57)
+   ✔ Do search @done (15-05-24 10:38)
    ✔ Do load @done (15-05-01 21:47)
 
 --- ✄ -----------------------
@@ -28,6 +28,7 @@
    ✔ Drag and drop to messages @done (15-05-07 11:27)
    ✔ Optimize code & make everything client-side @done (15-05-06 22:28)
    ✔ Sending images @done (15-05-07 11:27)
+   ✔ Uploading images @done (15-05-24 10:33)
 
 --- ✄ -----------------------
 
@@ -38,4 +39,4 @@ LANDING Page:
 
 Others:
    ✔ @high FIX WHATEVER IS HERE [file](.\public\node\server.js)  (`ALT` + `O`) @created(15-05-02 22:18) @done (15-05-02 23:13)
-   ✘ Mobile design @cancelled (15-05-06 22:30)
+   ☐ Mobile design

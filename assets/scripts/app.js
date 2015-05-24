@@ -36,7 +36,7 @@ function uploadTmp () {
 			xhr = new XMLHttpRequest();
 		for (var x = files.length - 1; x >= 0; x--) {
 			var file = files[x];
-			formData.append("file[]", file);
+			formData.append("files", file);
 		};
 
 		xhr.upload.addEventListener('progress', progressHandler, false);
@@ -46,6 +46,8 @@ function uploadTmp () {
 			$(".loader.null").removeClass("null");
 		}
 
+
+		//Recieve messages
 		function completeHandler (event) {
 			$(".loader").addClass("null");
 			var data = JSON.parse(event.target.responseText);
@@ -60,7 +62,7 @@ function uploadTmp () {
 			$(this).scrollTop(scrollTop - Math.round(delta) * 50);
 		});
 
-		xhr.open("POST", 'php/upload.php');
+		xhr.open("POST", '/upload');
 		xhr.send(formData);
 		dropZone.className = "null";
 	}

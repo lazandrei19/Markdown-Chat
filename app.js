@@ -4,14 +4,18 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var multer = require('multer');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
 var register = require('./routes/register');
 var signin = require('./routes/signin');
 var landing = require('./routes/landing');
+var upload = require('./routes/upload');
 
 var app = express();
+
+var done = false;
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -23,13 +27,26 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(multer({ dest: './uploads/',
+ rename: function (fieldname, filename) {
+    return filename+Date.now();
+  },
+  onFileUploadStart: function (file) {
+    console.log(file.originalname + ' is starting ...');
+  },
+  onFileUploadComplete: function (file) {
+    console.log(file.fieldname + ' uploaded to  ' + file.path);
+    done = true;
+  }
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/register', register);
 app.use('/signin', signin);
 app.use('/landing', landing);
-app.use('/users', users);
+app.use('/upload', upload);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
