@@ -76,6 +76,20 @@ body {
   height: 100%;
 }
 
+.legal {
+  position: fixed;
+  left: 10px;
+  bottom: 10px;
+  z-index: 2;
+  text-transform: uppercase;
+}
+
+.legal a {
+  color: white;
+  text-decoration: none;
+  
+}
+
     </style>
 
     
@@ -86,6 +100,8 @@ body {
 
   <body>
 
+
+    <div class="legal"><a href="http://codepen.io/kindofone/pen/rGcfs">©2015 by Yogev Ahuvia</a></div>
     
     <script src='js/jquery.min.js'></script>
 
