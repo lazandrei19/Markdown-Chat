@@ -42,73 +42,97 @@ function init () {
 	});
 }
 
-function uploadTmp () {
-	var dropZone = document.getElementById('drop');
-	var tmp = document.getElementById('tmp');
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
 
-	var upload = function(files) {
-		var formData = new FormData(),
-			xhr = new XMLHttpRequest();
-		for (var x = files.length - 1; x >= 0; x--) {
-			var file = files[x];
-			formData.append("files", file);
-		};
+} else {
 
-		xhr.upload.addEventListener('progress', progressHandler, false);
-		xhr.addEventListener('load', completeHandler, false);
+	function uploadTmp () {
+		var dropZone = document.getElementById('drop');
+		var tmp = document.getElementById('tmp');
 
-		function progressHandler (event) {
-			$(".loader.null").removeClass("null");
-		}
-
-
-		//Recieve messages
-		function completeHandler (event) {
-			$(".loader").addClass("null");
-			var data = JSON.parse(event.target.responseText);
-			for (var i = data.length - 1; i >= 0; i--) {
-				$(".images").html($(".images").html() + '<img src="data:image/jpeg;base64,' + data[i].file + '" class="image" draggable="true" ondragstart="drag(event)">');
-				$(".tmp").scrollTop(document.getElementsByClassName("tmp")[0].scrollHeight);
+		var upload = function(files) {
+			var formData = new FormData(),
+				xhr = new XMLHttpRequest();
+			for (var x = files.length - 1; x >= 0; x--) {
+				var file = files[x];
+				formData.append("files", file);
 			};
+
+			xhr.upload.addEventListener('progress', progressHandler, false);
+			xhr.addEventListener('load', completeHandler, false);
+
+			function progressHandler (event) {
+				$(".loader.null").removeClass("null");
+			}
+
+
+			//Recieve messages
+			function completeHandler (event) {
+				$(".loader").addClass("null");
+				var data = JSON.parse(event.target.responseText);
+				for (var i = data.length - 1; i >= 0; i--) {
+					$(".images").html($(".images").html() + '<img src="data:image/jpeg;base64,' + data[i].file + '" class="image" draggable="true" ondragstart="drag(event)">');
+					$(".tmp").scrollTop(document.getElementsByClassName("tmp")[0].scrollHeight);
+				};
+			}
+
+			$(".tmp").bind("mousewheel",function(ev, delta) {
+				var scrollTop = $(this).scrollTop();
+				$(this).scrollTop(scrollTop - Math.round(delta) * 50);
+			});
+
+			xhr.open("POST", '/upload');
+			xhr.send(formData);
+			dropZone.className = "null";
 		}
 
-		$(".tmp").bind("mousewheel",function(ev, delta) {
-			var scrollTop = $(this).scrollTop();
-			$(this).scrollTop(scrollTop - Math.round(delta) * 50);
-		});
+		tmp.ondrop = function(e) {
+			e.preventDefault();
+			upload(e.dataTransfer.files);
+		}
 
-		xhr.open("POST", '/upload');
-		xhr.send(formData);
-		dropZone.className = "null";
+		dropZone.ondrop = function(e) {
+			e.preventDefault();
+			this.className = "drop";
+		}
+
+		dropZone.ondragover = function(e) {
+			this.className = "drop over";
+			return false;
+		}
+
+		dropZone.ondragleave = function(e) {
+			this.className = "drop";
+			return false;
+		}
+
+		tmp.ondragover = function(e) {
+			return false;
+		}
+
+		tmp.ondragleave = function(e) {
+			return false;
+		}
 	}
 
-	tmp.ondrop = function(e) {
-		e.preventDefault();
-		upload(e.dataTransfer.files);
+	function drop (event) {
+		event.preventDefault()
+		var data = event.dataTransfer.getData("src");
+		if(toUser) {
+			socket.emit('input', {
+				from: thisUser,
+				to: toUser,
+				message: data
+			});
+		}
 	}
 
-	dropZone.ondrop = function(e) {
-		e.preventDefault();
-		this.className = "drop";
+	function drag (event) {
+		console.log("start");
+		event.dataTransfer.setData("src", event.target.src);
 	}
 
-	dropZone.ondragover = function(e) {
-		this.className = "drop over";
-		return false;
-	}
-
-	dropZone.ondragleave = function(e) {
-		this.className = "drop";
-		return false;
-	}
-
-	tmp.ondragover = function(e) {
-		return false;
-	}
-
-	tmp.ondragleave = function(e) {
-		return false;
-	}
+	uploadTmp();
 }
 
 function handleMessages () {
@@ -143,15 +167,17 @@ function handleMessages () {
 
 					e.preventDefault();
 
-					// $(".messages").html($(".messages").html() + '<div class="message"><div class="me">' + self.value + '</div></div>');
-					// $(".messages").scrollTop(document.getElementsByClassName("messages")[0].scrollHeight);
-
 					self.value = "";
 				}
 			}
 		})
 	}
 }
+
+//ALL SIZES CODE
+
+init();
+handleMessages();
 
 function loadContacts(search) {
 	var contacts = $(".users");
@@ -234,30 +260,6 @@ function detectOfflineMessages () {
 		}
 	});
 }
-
-function drop (event) {
-	event.preventDefault()
-	var data = event.dataTransfer.getData("src");
-	if(toUser) {
-		socket.emit('input', {
-			from: thisUser,
-			to: toUser,
-			message: data
-		});
-	}
-}
-
-function drag (event) {
-	console.log("start");
-	event.dataTransfer.setData("src", event.target.src);
-}
-
-
-
-//Running Functions
-init();
-uploadTmp();
-handleMessages();
 
 //Jqery Event Handlers
 $("#search").focus(function(ev) {
