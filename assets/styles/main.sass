@@ -141,6 +141,7 @@ body:before
 
 			li
 				& > span.status 
+<<<<<<< HEAD
 				display: inline-block
 				width: 7px
 				height: 7px
@@ -148,6 +149,15 @@ body:before
 				margin-bottom: 2px
 				background-color: #666666
 				border-radius: 50%
+=======
+					display: inline-block
+					width: 7px
+					height: 7px
+					margin-right: 5px
+					margin-bottom: 2px
+					background-color: #666666
+					border-radius: 50%
+>>>>>>> origin/master
 
 				&.newMessage > span.status 
 					animation: blinkOffline 2s  infinite
@@ -213,6 +223,11 @@ body:before
 				size: contain
 				repeat: no-repeat
 				position: 50%
+			transition: all 0.2s $ease-out-quad
+
+			&:hover
+				opacity: 0.25
+				transition: all 0.1 $ease-out-quad
 
 
 		@media screen and (max-width: 1000px)
@@ -370,28 +385,28 @@ body:before
 
 @keyframes blink 
 	0% 
-		background-color: red
-	
-
-	50% 
 		background-color: green
 	
 
-	100% 
+	50% 
 		background-color: red
+	
+
+	100% 
+		background-color: green
 	
 
 @-webkit-keyframes blink 
 	0% 
-		background-color: red
-	
-
-	50% 
 		background-color: green
 	
 
-	100% 
+	50% 
 		background-color: red
+	
+
+	100% 
+		background-color: green
 	
 
 
@@ -401,7 +416,7 @@ body:before
 	
 
 	50% 
-		background-color: green
+		background-color: red
 	
 
 	100% 
@@ -414,7 +429,7 @@ body:before
 	
 
 	50% 
-		background-color: green
+		background-color: red
 	
 
 	100% 

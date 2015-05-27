@@ -111,12 +111,12 @@ body:before {
       margin-bottom: 2px;
       background-color: #666666;
       border-radius: 50%; }
-      .contacts .users .offline li > span.status.newMessage > span.status {
-        animation: blinkOffline 2s infinite;
-        -webkit-animation: blinkOffline 2s infinite; }
-      .contacts .users .offline li > span.status.newMessage > span.name {
-        font-weight: bold;
-        font-size: 18px; }
+    .contacts .users .offline li.newMessage > span.status {
+      animation: blinkOffline 2s infinite;
+      -webkit-animation: blinkOffline 2s infinite; }
+    .contacts .users .offline li.newMessage > span.name {
+      font-weight: bold;
+      font-size: 18px; }
   .contacts .fandt {
     height: 100px;
     background-color: transparent;
@@ -167,7 +167,11 @@ body:before {
       background-image: url("../images/EdgeLogoText.png");
       background-size: contain;
       background-repeat: no-repeat;
-      background-position: 50%; }
+      background-position: 50%;
+      transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+      .chat .messages .logo:hover {
+        opacity: 0.25;
+        transition: all 0.1 cubic-bezier(0.25, 0.46, 0.45, 0.94); }
     @media screen and (max-width: 1000px) {
       .chat .messages {
         overflow-y: scroll; } }
@@ -284,30 +288,30 @@ body:before {
 
 @keyframes blink {
   0% {
-    background-color: red; }
-  50% {
     background-color: green; }
+  50% {
+    background-color: red; }
   100% {
-    background-color: red; } }
+    background-color: green; } }
 @-webkit-keyframes blink {
   0% {
-    background-color: red; }
-  50% {
     background-color: green; }
+  50% {
+    background-color: red; }
   100% {
-    background-color: red; } }
+    background-color: green; } }
 @keyframes blinkOffline {
   0% {
     background-color: #666; }
   50% {
-    background-color: green; }
+    background-color: red; }
   100% {
     background-color: #666; } }
 @-webkit-keyframes blinkOffline {
   0% {
     background-color: #666; }
   50% {
-    background-color: green; }
+    background-color: red; }
   100% {
     background-color: #666; } }
 @-webkit-keyframes load7 {
