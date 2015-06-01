@@ -132,3 +132,10 @@ label input[type=checkbox]:checked + .label-text:before {
 	color: rgba(0, 116, 217, 0.85);
 	cursor: pointer;
 }
+
+@media screen and (max-width: 550px) {
+	input[type=text], input[type=password] {
+		width: 300px;
+		box-sizing: border-box;
+	}
+}

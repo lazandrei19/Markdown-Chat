@@ -3,15 +3,17 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Chat</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+	<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
 	<link rel="stylesheet" type="text/css" href="css/app.css" />
 </head>
 <body data-user= {{ uniq }} id="body">
 	<div class="overlay"></div>
 	<div class="all">
-		<div class="menu"></div>
 		<div class="container">
-			<div class="contacts">
+			<div class="contacts page">
+				<div class="navbar">
+					<div class="search"><input type="text" id="search" placeholder="search"></div>
+				</div>
 				<div id="searchbar"><input placeholder="search" id="search"></div>
 				<div class="users">
 				</div>
@@ -21,13 +23,26 @@
 					<span class="to"></span>
 				</div>
 			</div>
-			<div class="chat">
+			<div class="chat page">
+				<div class="navbar">
+					<div class="contacts"></div>
+					<div class="contact"><span class="status"></span><span class="name">aaa</span></div>
+					<div class="upload"></div>
+					<form action="/upload" method="post" enctype="multipart/form-data">
+						<input type="file" name="files" id="files" accept="image/*">
+					</form>
+				</div>
 				<div class="messages" ondragover="event.preventDefault();" ondrop="drop(event)">
-					<div class="logo">
-					</div>
+					
 				</div>
 				<div class="input">
 					<textarea id="input"></textarea>
+				</div>
+				<div class="input-mobile">
+					<div class="text-input">
+						<input type="text" name="mesage" value="" placeholder="" id="inputMobile">
+					</div>
+					<div class="send"></div>
 				</div>
 			</div>
 			<div class="tmp" id="tmp">

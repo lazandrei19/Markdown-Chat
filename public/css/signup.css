@@ -96,10 +96,9 @@ input:focus {
 	cursor: pointer;
 }
 
-.g-recaptcha {
-	position: absolute;
-	left: 50%;
-	-ms-transform: translate(-50%, -50%);
-	-webkit-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
+@media screen and (max-width: 550px) {
+	input[type=text], input[type=password] {
+		width: 300px;
+		box-sizing: border-box;
+	}
 }

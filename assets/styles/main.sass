@@ -18,6 +18,8 @@ body:before
 	height: 20% 
 	width: 20%
 
+	@media screen and (max-width: 550px)
+		background: white
 
 	transform: scale(5)
 	transform-origin: top left
@@ -52,7 +54,10 @@ body:before
 		margin: 0 auto
 		padding: 0
 
-.menu
+		@media screen and (max-width: 1000px)
+			width: 100%
+
+.navbar
 	display: none
 	+position(absolute, 2vh null null 2vh)
 	+size(25px)
@@ -71,12 +76,12 @@ body:before
 	float: left
 	background: rgba(#ddd, 0.5)
 	text-align: center
-
-	@media screen and (max-width: 1000px)
-		display: none
 	
 	#searchbar 
 		width: 100%
+
+		@media screen and (max-width: 550px)
+			display: none
 
 		input 
 			color: #000
@@ -112,7 +117,7 @@ body:before
 			
 
 			li 
-				& > span.status 
+				span.status 
 					display: inline-block
 					width: 7px
 					height: 7px
@@ -122,12 +127,12 @@ body:before
 					border-radius: 50%
 				
 
-				&.newMessage > span.status 
+				&.newMessage span.status 
 					animation: blink 2s  infinite
 					-webkit-animation: blink 2s  infinite
 				
 
-				&.newMessage > span.name 
+				&.newMessage span.name 
 					font-weight: bold
 					font-size: 18px
 				
@@ -140,21 +145,21 @@ body:before
 			
 
 			li
-				& > span.status
-				display: inline-block
-				width: 7px
-				height: 7px
-				margin-right: 5px
-				margin-bottom: 2px
-				background-color: #666666
-				border-radius: 50%
+				span.status
+					display: inline-block
+					width: 7px
+					height: 7px
+					margin-right: 5px
+					margin-bottom: 2px
+					background-color: #666666
+					border-radius: 50%
 
-				&.newMessage > span.status 
+				&.newMessage span.status 
 					animation: blinkOffline 2s  infinite
 					-webkit-animation: blinkOffline 2s  infinite
 				
 
-				&.newMessage > span.name 
+				&.newMessage span.name 
 					font-weight: bold
 					font-size: 18px
 				
@@ -168,6 +173,9 @@ body:before
 		font-weight: bold
 		text-align: center
 		font-size: 18px
+
+		@media screen and (max-width: 550px)
+			display: none
 
 		span 
 			display: inline-block
@@ -184,12 +192,7 @@ body:before
 	position: relative
 
 	@media screen and (max-width: 1000px)
-		width: 90%
-		+center
-
-	@media screen and (max-width: 750px)
-		width: 100%
-
+		width: 78%
 
 	.messages 
 		position: absolute
@@ -372,7 +375,262 @@ body:before
 .null 
 	display: none
 
+.navbar
+	display: none
 
+.input-mobile
+	display: none
+
+//MOBILE SECTION
+@media screen and (max-width: 550px)
+	.all
+		max-width: 100vw
+		max-height: 100vh
+		overflow-x: hidden
+		
+		.container
+			+size(200vw 100vh)
+			+clearfix
+			+transition(all 0.3s $ease-out-quad)
+
+			&.second
+				margin-left: -100vw
+
+			.page
+				+size(100vw 100vh)
+				float: left
+				position: relative
+
+	.navbar
+		+position(absolute, 0 null null 0)
+		width: 100vw
+		background: #0074D9
+		height: 40px
+		display: block
+	
+	.contacts
+		.navbar
+			.search
+				height: 30px
+				width: 75%
+				+position(absolute, 50% 50%)
+				+transform(translate(-50%, -50%))
+				background: white
+				border-radius: 15px
+				text-align: center
+				line-height: 30px
+				color: #cbcbcb
+				font-size: 18.4px
+				font-weight: 100
+				border: 0
+				text-align: center
+				
+				input
+					width: 100px
+					height: 30px
+					box-sizing: border-box
+					line-height: 30px
+					border-radius: 15px
+					border: 0
+					text-align: center
+					position: absolute
+					left: 50%
+					+transform(translateX(-50%))
+					transition: all 0.2s $ease-out-quad
+					
+					&:focus
+						outline: 0
+						text-align: left
+						width: calc(100% - 30px)
+		.users
+			height: calc(100% - 40px)
+			+position(absolute, 40px 0 0 0)
+			
+			.contact
+				display: block
+				+size(100% 75px)
+				position: relative
+				
+				.info
+					height: 40px
+					+position(absolute, 50% null null 5px)
+					+transform(translateY(-50%))
+					
+					span.status
+						display: inline-block
+						+size(25px)
+						border-radius: 50%
+						background-color: black
+						
+					span.name
+						display: inline-block
+						font-size: 32.2px
+						margin-left: 5px
+						line-height: 40px
+						
+				.arrow
+					+position(absolute, 22px 10px null null)
+					+size(12px 30px)
+					background: url(http://imgh.us/arrow_3.svg)
+
+				
+				hr
+					+position(absolute, null null 0 12.5px)
+					display: inline-block
+					width: 335px
+					margin: 0
+					border: 0
+					border-bottom: 1px solid #cbcbcb
+	
+	.chat.page
+		.navbar
+			+position(absolute, 0px 0px null 0px)
+			height: 40px
+			background: rgba(0, 116, 217, 0.85)
+
+			.contacts
+				+position(absolute, 5px null null 15px)
+				+size(35px 30px)
+				display: inline-block
+				background:
+					image: url(../svgs/contacts.svg)
+					size: cover
+
+			.contact
+				+center
+				
+				span.status
+					display: inline-block
+					+size(15px)
+					margin-right: 5px
+					background-color: green
+					border-radius: 50%
+
+				span.name
+					line-height: 40px
+					font-size: 25px
+					color: white
+					letter-spacing: 1px
+
+			.upload
+				+position(absolute, 5px 10px null null)
+				+size(25px 30px)
+				display: inline-block
+				background:
+					image: url(../svgs/upload.svg)
+					size: cover
+
+			form
+				display: none
+		
+		.messages
+			position: absolute
+			top: 40px
+			width: 100%
+			height: calc(100% - 80px)
+			display: block
+			overflow: auto
+			
+			.message-mobile
+				min-height: 85px
+				width: 100%
+				position: relative
+
+				.me
+					display: block
+					right: 25px
+					text-align: left
+					float: right
+					background: #cbcbcb
+					border-radius: 25px
+					width: 75%
+					padding: 10px 3px
+					margin-bottom: 10px
+					word-wrap: break-word
+					position: absolute
+					top: 50%
+					transform: translateY(-50%)
+					min-height: 50px
+					padding: 10px
+
+					&:before
+						width: 50px
+						height: 30px
+						background: #cbcbcb
+						display: block
+						position: absolute
+						top: 0
+						right: -15px
+						clip-path: polygon(100% 0, 70% 100%, 0 0)
+						color: #cbcbcb
+						content: '.'
+						z-index: -1
+
+				.you
+					display: block
+					left: 25px
+					text-align: left
+					background: #cbcbcb
+					border-radius: 25px
+					padding: 10px 3px
+					width: 75%
+					margin-bottom: 10px
+					float: left
+					word-wrap: break-word
+					position: absolute
+					top: 50%
+					transform: translateY(-50%)
+					min-height: 50px
+					padding: 10px
+
+					&:before
+						width: 50px
+						height: 30px
+						background: #cbcbcb
+						display: block
+						position: absolute
+						top: 0
+						left: -15px
+						clip-path: polygon(0 0, 100% 0, 30% 100%)
+						color: #cbcbcb
+						content: '.'
+						z-index: -1
+
+
+		textarea
+			display: none
+
+		.input-mobile
+			display: block
+			+position(absolute, null 0px 0px 0px)
+			height: 40px
+			background: #E0E0E0
+
+			.text-input
+				+position(absolute, 5px 30px 5px 10px)
+				background: white
+				border-radius: 15px
+				
+				input
+					height: 100%
+					width: calc(100% - 30px)
+					box-sizing: border-box
+					text-align: left
+					border-radius: 15px
+					border: 0
+					&:focus
+						outline: 0
+
+			.send
+				+size(20px)
+				+position(absolute, 10px 5px 10px null)
+				background:
+					image: url(../svgs/send.svg)
+					size: cover
+
+
+
+//KEYFRAMES
 @keyframes blink 
 	0% 
 		background-color: green

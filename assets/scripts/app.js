@@ -6,6 +6,7 @@ var toUser;
 var toUsername;
 var allUsers = [];
 var images = [];
+var isMobile = false;
 
 //Functions
 function init () {
@@ -25,100 +26,127 @@ function init () {
 		var scrollTop = $(this).scrollTop();
 		$(this).scrollTop(scrollTop - Math.round(delta) * 50);
 	});
+
+	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+		isMobile = true;
+
+		$(".input-mobile .send").click(function (ev) {
+			console.log('hey');
+			var messages = $('.messages');
+			var input = $("#inputMobile");
+
+			if(socket !== undefined) {
+				
+				//Error messages pop here *peek-a-boo ‹’’›(Ͼ˳Ͽ)‹’’›*
+
+				socket.on('er', function (err) {
+					alert(err);
+				});
+
+				socket.emit('input', {
+					from: thisUser,
+					to: toUser,
+					message: input.val()
+				});
+
+				input.val('');
+			}
+		});
+
+		$(".chat .navbar .upload").click(function (ev) {
+			$("#files").click();
+		});
+
+	}
 }
 
-if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+function uploadTmp () {
+	var dropZone = document.getElementById('drop');
+	var tmp = document.getElementById('tmp');
 
-} else {
+	var upload = function(files) {
+		var formData = new FormData(),
+			xhr = new XMLHttpRequest();
+		for (var x = files.length - 1; x >= 0; x--) {
+			var file = files[x];
+			formData.append("files", file);
+		};
 
-	function uploadTmp () {
-		var dropZone = document.getElementById('drop');
-		var tmp = document.getElementById('tmp');
+		xhr.upload.addEventListener('progress', progressHandler, false);
+		xhr.addEventListener('load', completeHandler, false);
 
-		var upload = function(files) {
-			var formData = new FormData(),
-				xhr = new XMLHttpRequest();
-			for (var x = files.length - 1; x >= 0; x--) {
-				var file = files[x];
-				formData.append("files", file);
+		function progressHandler (event) {
+			$(".loader.null").removeClass("null");
+		}
+
+
+		//Recieve messages
+		function completeHandler (event) {
+			$(".loader").addClass("null");
+			var data = JSON.parse(event.target.responseText);
+			for (var i = data.length - 1; i >= 0; i--) {
+				$(".images").html($(".images").html() + '<img src="data:image/jpeg;base64,' + data[i].file + '" class="image" draggable="true" ondragstart="drag(event)">');
+				$(".tmp").scrollTop(document.getElementsByClassName("tmp")[0].scrollHeight);
 			};
-
-			xhr.upload.addEventListener('progress', progressHandler, false);
-			xhr.addEventListener('load', completeHandler, false);
-
-			function progressHandler (event) {
-				$(".loader.null").removeClass("null");
-			}
-
-
-			//Recieve messages
-			function completeHandler (event) {
-				$(".loader").addClass("null");
-				var data = JSON.parse(event.target.responseText);
-				for (var i = data.length - 1; i >= 0; i--) {
-					$(".images").html($(".images").html() + '<img src="data:image/jpeg;base64,' + data[i].file + '" class="image" draggable="true" ondragstart="drag(event)">');
-					$(".tmp").scrollTop(document.getElementsByClassName("tmp")[0].scrollHeight);
-				};
-			}
-
-			$(".tmp").bind("mousewheel",function(ev, delta) {
-				var scrollTop = $(this).scrollTop();
-				$(this).scrollTop(scrollTop - Math.round(delta) * 50);
-			});
-
-			xhr.open("POST", '/upload');
-			xhr.send(formData);
-			dropZone.className = "null";
 		}
 
-		tmp.ondrop = function(e) {
-			e.preventDefault();
-			upload(e.dataTransfer.files);
-		}
+		$(".tmp").bind("mousewheel",function(ev, delta) {
+			var scrollTop = $(this).scrollTop();
+			$(this).scrollTop(scrollTop - Math.round(delta) * 50);
+		});
 
-		dropZone.ondrop = function(e) {
-			e.preventDefault();
-			this.className = "drop";
-		}
-
-		dropZone.ondragover = function(e) {
-			this.className = "drop over";
-			return false;
-		}
-
-		dropZone.ondragleave = function(e) {
-			this.className = "drop";
-			return false;
-		}
-
-		tmp.ondragover = function(e) {
-			return false;
-		}
-
-		tmp.ondragleave = function(e) {
-			return false;
-		}
+		xhr.open("POST", '/upload');
+		xhr.send(formData);
+		dropZone.className = "null";
 	}
 
-	function drop (event) {
-		event.preventDefault()
-		var data = event.dataTransfer.getData("src");
-		if(toUser) {
-			socket.emit('input', {
-				from: thisUser,
-				to: toUser,
-				message: data
-			});
-		}
+	tmp.ondrop = function(e) {
+		e.preventDefault();
+		upload(e.dataTransfer.files);
 	}
 
-	function drag (event) {
-		console.log("start");
-		event.dataTransfer.setData("src", event.target.src);
+	dropZone.ondrop = function(e) {
+		e.preventDefault();
+		this.className = "drop";
 	}
 
-	uploadTmp();
+	dropZone.ondragover = function(e) {
+		this.className = "drop over";
+		return false;
+	}
+
+	dropZone.ondragleave = function(e) {
+		this.className = "drop";
+		return false;
+	}
+
+	tmp.ondragover = function(e) {
+		return false;
+	}
+
+	tmp.ondragleave = function(e) {
+		return false;
+	}
 }
+
+function drop (event) {
+	event.preventDefault()
+	var data = event.dataTransfer.getData("src");
+	if(toUser) {
+		socket.emit('input', {
+			from: thisUser,
+			to: toUser,
+			message: data
+		});
+	}
+}
+
+function drag (event) {
+	console.log("start");
+	event.dataTransfer.setData("src", event.target.src);
+}
+
+uploadTmp();
 
 function handleMessages () {
 	var messages = $('.messages');
@@ -173,10 +201,16 @@ function loadContacts(search) {
 		var online = '<div class="online"><div class="ontext"><i>~~Online~~</i></div><ul>';
 		var offline = '<div class="offline"><div class="offtext"><i>~~Offline~~</i></div><ul>';
 		var template = [
-			'<li to="',
-			'""><span class="status"></span><span class="name">',
-			'</span></li>'
+			'<li onClick="clickOnTo(this)" class="contact" data-to="',
+			'"><div class="info"><span class="status"></span><span class="name">',
+			'</span></div></li>'
 		];
+
+		if(isMobile) {
+			online = '<div class="online"><ul>';
+			offline = '<div class="offline"><ul>';
+			template[2] = '</span></div><div class="arrow"></div><hr></li>';
+		}
 
 		users.forEach(function(element, index){
 			if(element.isOnline) {
@@ -186,9 +220,13 @@ function loadContacts(search) {
 				offline += template[0] + element.uniq + template[1] + element.username + template[2];
 			}
 		});
-
-		online += '</ul></div>';
-		offline += '</ul></div>';
+		if(isMobile) {
+			offline += '</ul>';
+		} else {
+			online += '</ul></div>';
+			offline += '</ul></div>';
+		}
+		
 
 		$(".users").html(online + offline);
 	});
@@ -199,6 +237,7 @@ function loadMessages () {
 	tmp.sort();
 	var between = tmp[0] + tmp[1];
 	socket.emit('loadMessages', between);
+	$('.container').addClass('second');
 }
 
 function setUsername (username) {
@@ -211,13 +250,19 @@ function setTo (username) {
 	$(".to").html(username);
 }
 
+function setMobileData () {
+	//DO STATUS
+	$(".chat.page .navbar .contact span.name").html(toUsername);
+}
+
 function clickOnTo (ev) {
-	ev.className="active";
+	ev.className = "contact active";
 	toUser = ev.dataset.to;
 	setTo($(".active .name").html());
-	ev.className="";
+	ev.className="contact";
 	$(".messages").html('');
 	loadMessages();
+	if(isMobile) setMobileData();
 	socket.emit('deleteUserFromuMessages', toUser);
 }
 
@@ -225,7 +270,7 @@ function assignTargetsToArray () {
 	var aUs = $(".users li");
 	
 	for (var i = aUs.length - 1; i >= 0; i--) {
-		var result = $.grep(allUsers, function(e){ return e.uniq == aUs[i].dataset.to; });
+		var result = $.grep(allUsers, function(e){return e.uniq == aUs[i].dataset.to; });
 		result[0].target = aUs[i];
 	};
 }
@@ -267,10 +312,16 @@ socket.on('reqestedUsers', function (users) {
 	var online = '<div class="online"><div class="ontext"><i>~~Online~~</i></div><ul>';
 	var offline = '<div class="offline"><div class="offtext"><i>~~Offline~~</i></div><ul>';
 	var template = [
-		'<li onClick="clickOnTo(this)" data-to="',
-		'""><span class="status"></span><span class="name">',
-		'</span></li>'
+		'<li onClick="clickOnTo(this)" class="contact" data-to="',
+		'"><div class="info"><span class="status"></span><span class="name">',
+		'</span></div></li>'
 	];
+
+	if(isMobile) {
+		online = '<div class="online"><ul>';
+		offline = '<div class="offline"><ul>';
+		template[2] = '</span></div><div class="arrow"></div><hr></li>';
+	}
 
 	allUsers = users;
 
@@ -297,7 +348,9 @@ socket.on('reqestedUsers', function (users) {
 
 socket.on('newMessage', function (m) {
 	if(m.from == toUser) {
-		$(".messages").html($(".messages").html() + '<div class="message"><div class="you">' + m.message + '</div></div>');
+		var clas = "message";
+		if(isMobile) clas = "message-mobile";
+		$(".messages").html($(".messages").html() + '<div class="' + clas + '"><div class="you">' + m.message + '</div></div>');
 		$(".messages").scrollTop(document.getElementsByClassName("messages")[0].scrollHeight);
 	} else {
 		var result = $.grep(allUsers, function(e){ return e.uniq == m.from; });
@@ -313,6 +366,8 @@ socket.on('message', function (m) {
 	} else if(m.from == toUser){
 		p = "you";
 	}
-	$(".messages").html($(".messages").html() + '<div class="message"><div class="' + p +'">' + m.message + '</div></div>');
+	var clas = "message";
+	if(isMobile) clas = "message-mobile";
+	$(".messages").html($(".messages").html() + '<div class="' + clas + '"><div class="' + p +'">' + m.message + '</div></div>');
 	$(".messages").scrollTop(document.getElementsByClassName("messages")[0].scrollHeight);
 });
