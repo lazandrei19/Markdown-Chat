@@ -55,6 +55,7 @@ function init () {
 
 		$(".chat .navbar .upload").click(function (ev) {
 			$("#files").click();
+			
 		});
 
 	}

@@ -11,6 +11,7 @@ var register = require('./routes/register');
 var signin = require('./routes/signin');
 var landing = require('./routes/landing');
 var upload = require('./routes/upload');
+//var uploadMobile = require('./routes/uploadMobile');
 var easteregg = require('./routes/easteregg');
 
 var app = express();
@@ -47,6 +48,7 @@ app.use('/register', register);
 app.use('/signin', signin);
 app.use('/landing', landing);
 app.use('/upload', upload);
+//app.use('/uploadMobile', uploadMobile);
 app.use('/easteregg', easteregg);
 
 

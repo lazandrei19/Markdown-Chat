@@ -25,7 +25,7 @@ router.post('/',function(req, res, next){
 			fs.unlink(req.files.files[i].path);
 		}
 	}
-	res.send(data);
+	//res.send(data);
 });
 
 module.exports = router;
