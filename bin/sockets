@@ -1,0 +1,165 @@
+var client = require('socket.io').listen(8080).sockets;
+var mongo = require('mongodb').MongoClient;
+var mDown = require('pagedown').getSanitizingConverter();
+
+/**
+ * WS server
+ */
+
+//Mongo Connection
+mongo.connect("mongodb://127.0.0.1/chat", function(err, db) {
+  if(err) throw err;
+
+  //Socket Connection
+  client.on('connection', function(socket) {
+    //Private Variables
+    var mes = db.collection('messages');
+    var thisUser;
+    var users = db.collection('users');
+
+    //Socket.io Event Handlers
+
+    //Wait for input
+    socket.on('input', function(data) {
+      console.log('data');
+      var from = data.from,
+        to = data.to,
+        tmp = [from, to],
+        time,
+        wsPattern = /^\s*$/,
+        message = data.message;
+      tmp.sort();
+      var between = tmp[0] + tmp[1];
+      time = Date.now();
+
+      if(!(wsPattern.test(from) || wsPattern.test(to) || wsPattern.test(message) || typeof data.from === 'undefined' || typeof data.to === 'undefined' || typeof data.message === 'undefined')){
+        mes.insert({from: from, to: to, between: between, time: time, message: message});
+        users.findOne({uniq: to}, {"_id": false, "isOnline": true}, function (err, item) {
+          var isOnline = item.isOnline;
+          var mess = {from: from, message: getRealMessage(message)};
+          if(isOnline) {
+            emitSpeciffic(to, 'newMessage', mess);
+          } else {
+            users.findOne({uniq: to}, {"_id": false, "uMessages": true}, function (err, item) {
+              var tmpuMessages = [];
+              tmpuMessages.push(from);
+              if(item.uMessages){
+                item.uMessages.forEach(function(el, index) {
+                  if(tmpuMessages.indexOf(el) === -1) {
+                    tmpuMessages.push(el);
+                  }
+                });
+              }
+
+              users.update({uniq: to}, {$set: {uMessages: tmpuMessages}})
+            });
+          }
+
+          socket.emit('message', mess);
+        });
+      } else {
+        socket.emit('er', "One of the variables is empty.\nYou tried cheating the system! ლ(ಠ益ಠლ)");
+      }
+    });
+
+    //Mark as Online
+    socket.on('isOnline', function (data) {
+      socket.set('user', data);
+      thisUser = data;
+      users.update({uniq: thisUser}, {$set: {isOnline: true}});
+      loadUsers();
+    });
+
+    //Mark as Offline 
+    socket.on('disconnect', function () {
+      users.update({uniq: thisUser}, {$set: {isOnline: false}});
+      loadUsers();
+    });
+
+    //Return users
+    socket.on('requestUsers', function (data) {
+      var result = [];
+      var regex = ".*" + data + ".*";
+      users.find({username: {$regex: regex}}, {username: true, isOnline: true, uniq: true, _id: false}).toArray(function (err, cursor) {
+        cursor.forEach(function (item) {
+          result.push(item);
+        });
+        socket.emit('reqestedUsers', result);
+      });
+    });
+
+    //Load users
+    socket.on('updateUsers', function () {
+      loadUsers();
+    });
+
+    function loadUsers () {
+      var result = [];
+      users.find({}, {username: true, isOnline: true, uniq: true, _id: false}).toArray(function (err, cursor) {
+        cursor.forEach(function (item) {
+          result.push(item);
+        });
+        client.emit('reqestedUsers', result);
+      });
+    }
+
+    socket.on('loadMessages', function (between) {
+      var result = [];
+      mes.find({between: between}, {from: true, message: true, time: true, _id: false}).toArray(function (err, cursor) {
+        cursor.forEach(function (item) {
+          var tmp = item;
+          tmp.message = getRealMessage(tmp.message);
+          socket.emit('message', tmp);
+        });
+      });
+    });
+
+    socket.on('offlineMessages', function (user) {
+      users.findOne({uniq: user}, {"_id": false, "uMessages": true}, function (err, item) {
+        socket.emit('offlineMessagesUsers', item.uMessages);
+      });
+    });
+
+    socket.on('deleteUserFromuMessages', function (data) {
+      socket.get('user', function (err, name) {
+        users.findOne({uniq: name}, {"_id": false, "uMessages": true}, function (err, item) {
+          if(item) {
+            var tmpuMessages = [];
+            var uMessages = item.uMessages;
+            if(uMessages) {
+              uMessages.forEach(function (uMessageUser) {
+                if(uMessageUser != data) {
+                  tmpu.push(uMessageUser);
+                }
+              });
+            }
+            users.update({uniq: name}, {$set: {uMessages: tmpuMessages}});
+          }
+        });
+      });
+    });
+
+    //General Functions
+    function emitSpeciffic (user, channal, data) {
+      client.clients().forEach(function (item) {
+        item.get('user', function (err, name) {
+          if(name == user) {
+            item.emit(channal, data);
+          }
+        });
+      });
+    }
+
+    function getRealMessage (message) {
+      var data = message.substr(0, 10);
+      if(data == "data:image") {
+        return '<img src="' + message + '">'
+      } else {
+        var res = mDown.makeHtml(message);
+        res = res.replace("<p>", '');
+        res = res.replace("</p>", '');
+        return res;
+      }
+    }
+  });
+});

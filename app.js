@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var multer = require('multer');
+var serveStatic = require('serve-static');
+var compression = require('compression');
 
 var routes = require('./routes/index');
 var register = require('./routes/register');
@@ -23,8 +25,9 @@ var done = false;
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hjs');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(compression());
+app.use(serveStatic(__dirname + '/public', {maxAge: '180d'}))
+app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

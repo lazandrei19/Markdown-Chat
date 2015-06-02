@@ -11,7 +11,7 @@ var isMobile = false;
 //Functions
 function init () {
 	try {
-		socket = io.connect('http://192.168.3.100:8080');
+		socket = io.connect('chat-1edge.ddns.net:8080');
 	} catch(e) {
 		console.log(e);
 	}
@@ -152,12 +152,6 @@ uploadTmp();
 function handleMessages () {
 	var messages = $('.messages');
 	var input = $("#input");
-
-	try {
-		var socket = io.connect('http://192.168.3.100:8080');
-	} catch(e) {
-
-	}
 
 	if(socket !== undefined) {
 		
